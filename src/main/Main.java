@@ -40,6 +40,7 @@ public class Main extends Application {
         //launch(args);
         File f = new File("archivos/h8.txt");
         long bytes = f.length();
+        System.out.println("BYTES: "+bytes);
         Map<String, Identifier> coleccionID = new TreeMap<>();
         int longFrag = 100000;
         int cantPages = 0;
@@ -50,6 +51,8 @@ public class Main extends Application {
             boolean entra;
             boolean ultima=false;
             int frags=0;
+            long pba = 0;
+            long pb2=0;
 
             while(start<bytes && !ultima){
                 if(bytes<end){
@@ -70,9 +73,14 @@ public class Main extends Application {
 
                     System.out.println("fragmeto: "+fragmento.length()+" Inicia: " + inicia+" termina: "+termina);
                     String page = fragmento.substring(inicia,termina);
-                    page = page.substring(page.indexOf("<html"));
+                    int indexEmpieza = page.indexOf("<html");
+                    page = page.substring(indexEmpieza);
                     Document doc = Jsoup.parse(page);
-                    if(cantPages==0)System.out.println(doc.getElementsByTag("title"));
+                    if(cantPages==825){
+                        System.out.println(start+inicia + "hgelp");
+                        pba=start+inicia+indexEmpieza;
+                        pb2=start+termina;
+                    }
                     System.out.println("*******************************************************PAGINA*****************************************************");
                     System.out.println(++cantPages + " CANT PAGES");
                     anterior = termina;
@@ -105,6 +113,10 @@ public class Main extends Application {
                     end+=longFrag;
                 }
             }
+            byte[] frag = readData(f,pba,pb2-pba);
+            String prueba = new String(frag, StandardCharsets.UTF_8);
+            System.out.println("***********************************");
+            System.out.println(prueba);
         } catch (Exception e) {
             e.printStackTrace();
 
