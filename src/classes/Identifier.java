@@ -1,10 +1,10 @@
 package classes;
 
 public class Identifier {
-    private int start;
-    private int end;
+    private long start;
+    private long end;
 
-    public Identifier(int start, int end) {
+    public Identifier(long start, long end) {
         this.start = start;
         this.end = end;
     }
