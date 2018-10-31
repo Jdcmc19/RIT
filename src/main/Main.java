@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -24,7 +26,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public static byte[] readData(File f, int startByte, int chunkSize) throws Exception {
+    public static byte[] readData(File f, long startByte, long chunkSize) throws Exception {
         RandomAccessFile raf = new RandomAccessFile(f, "r");
         raf.seek(startByte);
         int size = (int) Math.min(chunkSize, raf.length()-startByte);
@@ -34,71 +36,78 @@ public class Main extends Application {
         raf.close();
         return data;
     }
-    public static boolean hasPage(String fragmento){
-        return (fragmento.contains("<html") && fragmento.contains("</html"));
-    }
     public static void main(String[] args) {
         //launch(args);
-        File f = new File("archivos/h9.txt");
+        File f = new File("archivos/h8.txt");
         long bytes = f.length();
         Map<String, Identifier> coleccionID = new TreeMap<>();
         int longFrag = 100000;
         int cantPages = 0;
         try {
-            int end = longFrag;
-            int start = 0;
+            long end = longFrag;
+            long start = 0;
+            long acumulado = 0;
+            boolean entra;
+            boolean ultima=false;
+            int frags=0;
 
-            while(start<bytes){
-                if(bytes<end) end = (int)bytes;
+            while(start<bytes && !ultima){
+                if(bytes<end){
+                    end = bytes;
+                    ultima = true;
+                }
                 byte[] frag = readData(f,start,end-start);
                 String fragmento = new String(frag, StandardCharsets.UTF_8);
 
-                int inicia = fragmento.indexOf("<html");
+                int inicia = 0;//fragmento.indexOf("<html");
                 int termina = fragmento.indexOf("</html")+7;
+                if (inicia>=termina) termina = fragmento.indexOf("</html",inicia)+7;
                 int anterior = 0;
                 System.out.println("FRAGMENTO: "+start+" end: "+end + " frag: "+fragmento.length());
-                System.out.println(fragmento);
+                entra = false;
                 while(inicia!=-1 && termina!=6){
                     System.out.println("Haspage");
 
                     System.out.println("fragmeto: "+fragmento.length()+" Inicia: " + inicia+" termina: "+termina);
                     String page = fragmento.substring(inicia,termina);
-
+                    page = page.substring(page.indexOf("<html"));
+                    Document doc = Jsoup.parse(page);
+                    if(cantPages==0)System.out.println(doc.getElementsByTag("title"));
                     System.out.println("*******************************************************PAGINA*****************************************************");
                     System.out.println(++cantPages + " CANT PAGES");
                     anterior = termina;
-                    inicia = fragmento.indexOf("<html",anterior);
+                    inicia = termina;// fragmento.indexOf("<html",anterior);
                     termina = fragmento.indexOf("</html",anterior)+7;
+                    entra = true;
 
                 }
-                if(inicia!=-1){
-                    int p = fragmento.substring(inicia).getBytes().length;
-                    start = fragmento.getBytes().length-p;
-                    System.out.println("ASDASDASDAhere + "+inicia);
+                if(entra == true) {
+                    System.out.println(++frags+  "    FRAGMENTOSSSSSS");
+                    System.out.println("Termino el frag start: " + start + " endL: " + end);
+                    if (inicia != -1) {
+                        int p = fragmento.substring(inicia).getBytes().length;
+                        int qq = fragmento.getBytes().length;
+                        start = start + (qq - p);
+                        System.out.println("ASDASDASDAhere + " + inicia + "p " + p + " qq " + qq + " acuymu " + acumulado);
+                    } else {
+                        int p = fragmento.substring(anterior).getBytes().length;
+                        int qq = fragmento.getBytes().length;
+                        start = start + (qq - p);
+                        System.out.println(termina + " termina start " + inicia);
+                        //start = fragmento.substring(0, anterior).getBytes().length + acumulado;
+                        System.out.println("not + " + anterior);
+                    }
+                    System.out.println(132);
+                    acumulado = end;
+                    end = start + longFrag;
+                    System.out.println("siugue el frag: start: " + start + " endL: " + end);
+                }else{
+                    end+=longFrag;
                 }
-                else{
-                    start = fragmento.substring(0,anterior).getBytes().length;
-                    System.out.println("not + "+anterior );
-                }
-                System.out.println(132);
-                end = start + longFrag;
-                System.out.println("Termino frag: start: "+start+" endL: "+end);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        /*System.out.println(f.length());
-        Scanner scan = null;
-        try {
-            scan = new Scanner(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        scan.useDelimiter("\\Z");
-        String content = scan.next();
-        System.out.println(content.length());*/
-
     }
 }
