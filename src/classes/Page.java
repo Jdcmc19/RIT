@@ -13,6 +13,16 @@ public class Page {
         this.h = h;
     }
 
+    @Override
+    public String toString() {
+        return "Page{" +
+                "\n a ='" + a + '\'' +
+                "\n body='" + body + '\'' +
+                "\n title='" + title + '\'' +
+                "\n h='" + h + '\'' +
+                '}';
+    }
+
     public String getA() {
         return a;
     }
