@@ -2,6 +2,8 @@ package classes;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -86,6 +88,15 @@ public class Charger {
             for(String title : coleccionID.keySet()){
                 System.out.println(++cont+" "+title);
             }*/
+
+            Identifier id = coleccionID.get("<title>Óxido de hierro (III) - Wikipedia, la enciclopedia libre</title>827");
+            byte[] fff = getFragment(f,id.getStart(),id.getEnd()-id.getStart()); //AGARRA EL FRAGMENTO CORRESPONDIENTE
+            String ff = new String(fff, StandardCharsets.UTF_8); //PASA EL FRAGMENTO(BYTES) A STRING
+            Document doc = Jsoup.parse(ff);
+            int c=0;
+            for (Element sentence : doc.getElementsByTag("a"))
+                System.out.println(sentence.text()+" "+ ++c);
+
         } catch (Exception e) {
             e.printStackTrace();
 
