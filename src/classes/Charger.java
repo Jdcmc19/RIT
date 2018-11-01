@@ -22,74 +22,70 @@ public class Charger {
     }
 
     public static void getFiles(String path){
-        File f = new File(path);
-        long fileBytes = f.length();
-        Map<String, Identifier> coleccionID = new TreeMap<>();
-        int longXFragmento = 100000;
-        int cantPages = 0;
+        File f = new File(path); //TODO PREGUNTAR AL PROFE SI ESTA BIEN
+        long fileBytes = f.length(); //Bytes del archivo
+        Map<String, Identifier> coleccionID = new TreeMap<>(); // TITULO PAGINA --->> [ByteInicio, ByteFinal] de cada pagina
+        int longXFragmento = 1000000; //TAMAÑO DE CADA FRAGMENTO/SEGMENTO
+        int cantPages = 0; //PARA SABER CUANTAS PAGINAS HAY
         try {
-            long endFragmento = longXFragmento;
-            long startFragmento = 0;
-            boolean tienePagina;
-            boolean ultima=false;
-            long pba = 0;
-            long pb2=0;
+            long endFragmento = longXFragmento; //DONDE TERMINARÁ EL FRAGMENTO
+            long startFragmento = 0; //DONDE EMPIEZA EL FRAGMENTO
+            boolean tienePagina; //SI EL FRAGMENTO ACTUAL, TIENE AL MENOS UNA PAGINA DENTRO
+            boolean ultima=false; //PARA SABER SI ES LA ULTIMA PAGINA
+            long pageStartByte = 0; //PARA CADA PAGINA SE ACTUALIZA, BYTE INICIO DE LA PAGINA
+            long pageEndByte=0; //X2
 
-            while(startFragmento<fileBytes && !ultima){
-                if(fileBytes<endFragmento){
+            while(startFragmento<fileBytes && !ultima){  //MIENTRAS QUE EL INICIO DEL FRAGMENTO SEA MENOR AL ARCHIVO -- ESTE ES EL WHILE DE LOS FRAGMENTOS
+                if(fileBytes<endFragmento){ //PARA QUE DETECTE SI ES EL ULTIMO FRAGMENTO
                     endFragmento = fileBytes;
                     ultima = true;
                 }
-                byte[] frag = getFragment(f,startFragmento,endFragmento-startFragmento);
-                String fragmento = new String(frag, StandardCharsets.UTF_8);
+                byte[] frag = getFragment(f,startFragmento,endFragmento-startFragmento); //AGARRA EL FRAGMENTO CORRESPONDIENTE
+                String fragmento = new String(frag, StandardCharsets.UTF_8); //PASA EL FRAGMENTO(BYTES) A STRING
 
-                int inicia = 0;
-                int termina = fragmento.indexOf("</html")+7;
-                if (inicia>=termina) termina = fragmento.indexOf("</html",inicia)+7;
-                int anterior = 0;
-                tienePagina = false;
-                while(inicia!=-1 && termina!=6){
-                    String page = fragmento.substring(inicia,termina);
-                    int indexEmpieza = page.indexOf("<html");
-                    page = page.substring(indexEmpieza);
-                    Document doc = Jsoup.parse(page);
-                    pba=startFragmento+fragmento.substring(0,inicia+indexEmpieza).getBytes().length;
-                    pb2=startFragmento+fragmento.substring(0,termina).getBytes().length;
-                    Identifier idPage = new Identifier(pba,pb2);
-                    coleccionID.put(doc.getElementsByTag("title").toString() + ++cantPages,idPage);
-                    anterior = termina;
-                    inicia = termina;
-                    termina = fragmento.indexOf("</html",anterior)+7;
-                    tienePagina = true;
+                int inicia = 0; //INICIA EN 0 SIEMPRE, NO DEBERIA FALLAR - INDICE DE INICIO DE UNA PAGINA
+                int termina = fragmento.indexOf("</html")+7; //ENCUENTRA EL INDICE DEL FINAL DE LA PAGINA [+7 para abarcar </html>]
+                if (inicia>=termina) //EN EL CUADERNO
+                    termina = fragmento.indexOf("</html",inicia)+7;
+                int anterior = 0; //INDICE DE DONDE TERMINO LA PAGINA ANTERIOR
+                tienePagina = false; //PARA SABER SI EL FRAGMENTO TIENE ALGUNA PAGINA [ENTRÓ AL WHILE O NO]
+                while(termina!=6){ //ESTE ES EL WHILE DE LAS PAGINAS
+
+                    String page = fragmento.substring(inicia,termina); //AGARRA DEL FRAGMENTO, UNA PAGINA PERO INCLUYE EL TEXTO DOCTYPE html PUBLIC
+                    int indexEmpieza = page.indexOf("<html"); //DE page, DONDE VERDADERAMENTE INICIA LA PAGINA "<html>"
+                    page = page.substring(indexEmpieza); //ACTUALIZA LA VARIABLE PARA DEJAR DESDE <html> HASTA </html>
+
+                    //TODO HACER QUE SAQUE LA ESTRUCTURA DEL HTML, <a>, <h?>, <body> etc
+                    Document doc = Jsoup.parse(page);//CREA EL HTML
+                    pageStartByte = startFragmento+fragmento.substring(0,inicia+indexEmpieza).getBytes().length; //EL BYTE EXACTO DONDE INICIA LA PAGINA [CADA PAGE]
+                    pageEndByte = startFragmento+fragmento.substring(0,termina).getBytes().length; //EL BYTE EXACTO DONDE TERMINA LA PAGINA [CADA PAGE]
+
+                    Identifier idPage = new Identifier(pageStartByte,pageEndByte); //GUARDA EL BYTE INICIO Y FINAL DE CADA PAGINA
+                    coleccionID.put(doc.getElementsByTag("title").toString() + ++cantPages,idPage); //METE EN EL DICCIONARIO EL TITULO ->> IDENTIFICADOR ^
+
+
+                    //ACTUALIZA INDICES PARA LA PROXIMA PAGINA
+                    anterior = termina; //GUARDA DONDE TERMINA LA PAGINA ANTERIOR
+                    inicia = termina; //EMPIEZA DONDE TERMINO LA PAGINA ANTERIOR
+                    termina = fragmento.indexOf("</html",anterior)+7;  //TERMINA EN EL PROXIMO </html> QUE ENCUENTRE DESPUES DE LA PAGINA ANTERIOR
+                    tienePagina = true; //SI LLEGO AQUI SIGNIFICA QUE SI HABIA UNA PAGINA
 
                 }
-                if(tienePagina) {
-                    if (inicia != -1) {
-                        int p = fragmento.substring(inicia).getBytes().length;
-                        int qq = fragmento.getBytes().length;
-                        startFragmento = startFragmento + (qq - p);
-                    } else {
-                        int p = fragmento.substring(anterior).getBytes().length;
-                        int qq = fragmento.getBytes().length;
-                        startFragmento = startFragmento + (qq - p);
-                    }
-                    System.out.println(132);
+                System.out.println(cantPages);
+                if(tienePagina) { //SI EL FRAGMENTO ANTERIOR TIENE AL MENOS UNA PAGINA
+                    int p = fragmento.substring(anterior).getBytes().length;
+                    int qq = fragmento.getBytes().length;
+                    startFragmento = startFragmento + (qq - p);
                     endFragmento = startFragmento + longXFragmento;
-                    System.out.println("siugue el frag: start: " + startFragmento + " endL: " + endFragmento);
-                }else{
+                }else{ //SI EL FRAGMENTO ANTERIOR NO TIENE NINGUNA PAGINA, ALARGA EL FRAGMENTO [LO HACE MÁS GRANDE]
                     endFragmento+=longXFragmento;
                 }
             }
-            System.out.println("puta: "+pba+ " pb2="+(pb2-pba));
-            System.out.println("pb2: "+pb2);
-            byte[] frag = getFragment(f,pba,pb2-pba);
-            String prueba = new String(frag, StandardCharsets.UTF_8);
-            System.out.println("***********************************");
-            //System.out.println(prueba);
-            int cont=0;
+            //PARA QUE IMPRIMA EL DICCIONARIO
+           /* int cont=0;
             for(String title : coleccionID.keySet()){
                 System.out.println(++cont+" "+title);
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
 

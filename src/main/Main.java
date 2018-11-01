@@ -28,7 +28,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        Charger.getFiles("/Users/cristi/Desktop/h8.txt");
+        Charger.getFiles("archivos/h6.txt");
         //launch(args);
 
     }
