@@ -28,7 +28,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        Charger.getFiles("/Users/cristi/Desktop/h8.txt");
+        Charger.getFiles("C:\\Users\\Joseph Salas\\Desktop\\TEC\\VI Semestre\\Información Textual\\Proyetos\\TP2 - RIT - 2018ii\\h8.txt");
         //launch(args);
 
     }
