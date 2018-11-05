@@ -15,9 +15,8 @@ public class Stemmer {
     //Patrón para dividir las palabras del documento
     private static final String splitPattern = "[^A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+";
     private static HashSet<String> stopWordsSet = new HashSet<String>();
-    private static Vector stemmingBodyWords;
-    private static Vector stemmingHWords;
-    private static Vector refVector;
+    private static Vector<String> stemmingBodyWords;
+    private static Vector<String> stemmingHWords;
     private static final SpanishStemmer spStemmer = new SpanishStemmer();
 
     //Metodo que retorna todas las stopwords en un hashSet
@@ -36,8 +35,8 @@ public class Stemmer {
 
 
 
-    public Page stemmerToDoc(String a, String body, String title, String h)
-    {
+    public Page stemmerToDoc(String a, String body, String title, String h) throws IOException {
+        HashSet<String> stopwords = getStopWordsSet();
         String[] splitBodyLine = body.toLowerCase().split(splitPattern);
         String[] splitHLine = h.toLowerCase().split(splitPattern);
 
@@ -45,7 +44,7 @@ public class Stemmer {
         {
             spStemmer.setCurrent(word);
 
-            if(spStemmer.stem() && ! stopWordsSet.contains(word))
+            if(spStemmer.stem() && ! stopwords.contains(word))
             {
                 stemmingBodyWords.add(spStemmer.getCurrent());
             }
@@ -55,7 +54,7 @@ public class Stemmer {
         {
             spStemmer.setCurrent(word);
 
-            if(spStemmer.stem() && ! stopWordsSet.contains(word))
+            if(spStemmer.stem() && ! stopwords.contains(word))
             {
                 stemmingHWords.add(spStemmer.getCurrent());
             }
@@ -63,6 +62,7 @@ public class Stemmer {
         return new Page(normaliceATag(a),stemmingBodyWordsToString(stemmingBodyWords), normaliceTitleTag(title),
                 stemmingHWordsToString(stemmingHWords) );
     }
+
 
     public String normaliceATag(String a )
     {
