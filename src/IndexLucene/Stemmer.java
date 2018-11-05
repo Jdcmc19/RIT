@@ -16,7 +16,7 @@ public class Stemmer {
     private static final String splitPattern = "[^A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+";
     private static HashSet<String> stopWordsSet = new HashSet<String>();
     private static Vector<String> stemmingBodyWords;
-    private static Vector<String> stemmingHWords;
+    private static Vector<String> stemmingHWords ;
     private static final SpanishStemmer spStemmer = new SpanishStemmer();
 
     //Metodo que retorna todas las stopwords en un hashSet
@@ -36,6 +36,8 @@ public class Stemmer {
 
 
     public Page stemmerToDoc(String a, String body, String title, String h) throws IOException {
+        stemmingBodyWords = new Vector<>();
+        stemmingHWords = new Vector<>();
         HashSet<String> stopwords = getStopWordsSet();
         String[] splitBodyLine = body.toLowerCase().split(splitPattern);
         String[] splitHLine = h.toLowerCase().split(splitPattern);

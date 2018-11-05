@@ -83,10 +83,10 @@ public class Charger {
                     Elements a = doc.getElementsByTag("a");
                     Elements body = doc.getElementsByTag("body");
                     Elements h = doc.select("h1,h2,h3,h4,h5,h6");
-                    stemmer.stemmerToDoc(concatElements(a), concatElements(body), title, concatElements(h));
+                    Page pagina = stemmer.stemmerToDoc(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
                     //Page pagina = new Page(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
                     //TODO AQUI LLAMAR LUCENE O LA FUNCION [llamarla de la clase Lucene]
-                    //System.out.println(pagina.getTitle()+ "// "+pagina.getA()+" //" + pagina.getBody()+ "// "+ pagina.getH() );
+                    System.out.println(pagina.getTitle()+ "// "+pagina.getA()+" //" + pagina.getBody()+ "// "+ pagina.getH() );
 
                     //ACTUALIZA INDICES PARA LA PROXIMA PAGINA
                     anterior = termina; //GUARDA DONDE TERMINA LA PAGINA ANTERIOR

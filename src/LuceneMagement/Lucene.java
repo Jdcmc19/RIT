@@ -1,4 +1,4 @@
-package classes;
+package LuceneMagement;
 
 public class Lucene {
 
