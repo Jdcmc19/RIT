@@ -1,5 +1,6 @@
 package main;
 
+import IndexLucene.Stemmer;
 import classes.Charger;
 import classes.Identifier;
 import javafx.application.Application;
@@ -11,9 +12,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,9 +30,14 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
-        Charger.getFiles("C:\\Users\\Joseph Salas\\Desktop\\TEC\\VI Semestre\\Información Textual\\Proyetos\\TP2 - RIT - 2018ii\\h8.txt");
+    public static void main(String[] args) throws IOException {
+        Charger.getFiles("C:\\Users\\Joseph Salas\\IdeaProjects\\RIT-master\\RIT\\src\\Collection\\h10.txt");
         //launch(args);
+        /*HashSet<String> prueba =  Stemmer.getStopWordsSet();
+        for(String s : prueba)
+        {
+            System.out.println(s);
+        }*/
 
     }
 }

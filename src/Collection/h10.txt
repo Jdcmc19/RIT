@@ -1,0 +1,70 @@
+<html>
+	<title>
+		Fabiana Avila
+	</title>
+	<body>
+		demas una mujer alta pelo negro
+	
+	<a>
+		20 amigos 
+	</a>
+	<h1>
+		Con novio
+	</h1></body>
+</html>
+<html>
+	<title>
+		alejandro martinez
+	</title>
+	<body>
+		hombre administrador de empresas
+	<a>
+		estatura normal lacio
+	</a>
+	<h1>
+		trabajador
+	</h1>	</body>
+
+</html>
+<html>
+	<title>
+		yorleny cedeno
+	</title>
+	<body>
+		pequena y con corto el cabello
+	
+	<a>
+		antes lo tenia largo
+	</a>
+	<h1>
+		le gustan las papas fritas
+	</h1></body>
+</html>
+<html>
+	<title>
+		juan de dios martinez
+	</title>
+	<body>
+		quiere jugar y esta gordo
+
+	<a>
+		esta haciendo mucho calor
+	</a>
+	<h1>
+		tiene 345 montores
+	</h1>	</body>
+</html>
+<html>
+	<title>
+		cristi martinez cedeno
+	</title>
+	<body>
+		estudia para bachi
+
+	<a>
+		esta cansada de estudiar
+	</a>
+	<h1>
+		quiere comer mucho
+	</h1>	</body>
+</html>

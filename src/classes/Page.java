@@ -38,4 +38,22 @@ public class Page {
     public String getH() {
         return h;
     }
+
+    public void setA(String a) {
+        this.a = a;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setH(String h) {
+        this.h = h;
+    }
 }
+
+

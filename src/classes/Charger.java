@@ -1,10 +1,12 @@
 package classes;
 
+import IndexLucene.Stemmer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -14,6 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Charger {
+
     private static byte[] getFragment(File f, long startByte, long chunkSize) throws Exception {
         RandomAccessFile raf = new RandomAccessFile(f, "r");
         raf.seek(startByte);
@@ -33,6 +36,7 @@ public class Charger {
     }
 
     public static void getFiles(String path){
+        Stemmer stemmer = new Stemmer();
         File f = new File(path); //TODO PREGUNTAR AL PROFE SI ESTA BIEN
         long fileBytes = f.length(); //Bytes del archivo
         Map<String, Identifier> coleccionID = new TreeMap<>(); // TITULO PAGINA --->> [ByteInicio, ByteFinal] de cada pagina
@@ -79,9 +83,10 @@ public class Charger {
                     Elements a = doc.getElementsByTag("a");
                     Elements body = doc.getElementsByTag("body");
                     Elements h = doc.select("h1,h2,h3,h4,h5,h6");
-
-                    Page pagina = new Page(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
+                    stemmer.stemmerToDoc(concatElements(a), concatElements(body), title, concatElements(h));
+                    //Page pagina = new Page(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
                     //TODO AQUI LLAMAR LUCENE O LA FUNCION [llamarla de la clase Lucene]
+                    //System.out.println(pagina.getTitle()+ "// "+pagina.getA()+" //" + pagina.getBody()+ "// "+ pagina.getH() );
 
                     //ACTUALIZA INDICES PARA LA PROXIMA PAGINA
                     anterior = termina; //GUARDA DONDE TERMINA LA PAGINA ANTERIOR
