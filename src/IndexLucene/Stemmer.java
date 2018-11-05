@@ -24,7 +24,7 @@ public class Stemmer {
 
 
     public static HashSet<String> getStopWordsSet() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Joseph Salas\\IdeaProjects\\RIT-master\\RIT\\Utils\\Stopwords.txt"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("Utils/Stopwords.txt"));
         String line;
         while ((line = bufferedReader.readLine())!= null)
         {

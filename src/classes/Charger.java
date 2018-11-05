@@ -1,5 +1,6 @@
 package classes;
 
+import LuceneMagement.LuceneIndexer;
 import IndexLucene.Stemmer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,6 +10,7 @@ import org.jsoup.select.Elements;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -17,7 +19,13 @@ import java.util.TreeMap;
 
 public class Charger {
 
-    private static byte[] getFragment(File f, long startByte, long chunkSize) throws Exception {
+    private LuceneIndexer indexer;
+
+    public Charger() throws IOException {
+        indexer  = new LuceneIndexer("C:/Users/iworth/iCloudDrive/Desktop/Index");
+    }
+
+    private byte[] getFragment(File f, long startByte, long chunkSize) throws Exception {
         RandomAccessFile raf = new RandomAccessFile(f, "r");
         raf.seek(startByte);
         int size = (int) Math.min(chunkSize, raf.length()-startByte);
@@ -26,7 +34,7 @@ public class Charger {
         raf.close();
         return data;
     }
-    private static String concatElements(Elements elements){
+    private String concatElements(Elements elements){
 
         String concatenado = "";
         for (Element sentence : elements)
@@ -35,7 +43,7 @@ public class Charger {
 
     }
 
-    public static void getFiles(String path){
+    public void getFiles(String path){
         Stemmer stemmer = new Stemmer();
         File f = new File(path); //TODO PREGUNTAR AL PROFE SI ESTA BIEN
         long fileBytes = f.length(); //Bytes del archivo
@@ -79,15 +87,14 @@ public class Charger {
                     if (title.isEmpty())
                         title = "SIN TITULO";
                     coleccionID.put(title + ", #" + ++cantPages, idPage); //METE EN EL DICCIONARIO EL TITULO ->> IDENTIFICADOR ^
-
+                    Elements body = doc.select("body");
                     Elements a = doc.getElementsByTag("a");
-                    Elements body = doc.getElementsByTag("body");
+
                     Elements h = doc.select("h1,h2,h3,h4,h5,h6");
                     Page pagina = stemmer.stemmerToDoc(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
                     //Page pagina = new Page(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
                     //TODO AQUI LLAMAR LUCENE O LA FUNCION [llamarla de la clase Lucene]
-                    System.out.println(pagina.getTitle()+ "// "+pagina.getA()+" //" + pagina.getBody()+ "// "+ pagina.getH() );
-
+                    indexer.indexFile(pagina);
                     //ACTUALIZA INDICES PARA LA PROXIMA PAGINA
                     anterior = termina; //GUARDA DONDE TERMINA LA PAGINA ANTERIOR
                     inicia = termina; //EMPIEZA DONDE TERMINO LA PAGINA ANTERIOR
@@ -105,10 +112,15 @@ public class Charger {
                     endFragmento += longXFragmento;
                 }
             }
+            indexer.close();
 
         } catch (Exception e) {
             e.printStackTrace();
 
         }
+    }
+
+    public LuceneIndexer getIndexer() {
+        return indexer;
     }
 }
