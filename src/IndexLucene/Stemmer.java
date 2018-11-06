@@ -33,7 +33,24 @@ public class Stemmer {
         return stopWordsSet;
     }
 
+    public String stemmerToCons(String consulta, Boolean stopwords) throws IOException {
+        Vector<String> stemmingQueryWords = new Vector<>();
+        HashSet<String> stops = getStopWordsSet();
+        String[] splitQueryLine = consulta.toLowerCase().split(splitPattern);
+        if(stopwords){
+            for (String word : splitQueryLine)
+            {
+                spStemmer.setCurrent(word);
 
+                if(spStemmer.stem() && ! stops.contains(word))
+                {
+                    stemmingQueryWords.add(spStemmer.getCurrent());
+                }
+                consulta = stemmingWordsToString(stemmingQueryWords);
+            }
+        }
+        return normaliceString(consulta);
+    }
 
     public Page stemmerToDoc(String a, String body, String title, String h) throws IOException {
         stemmingBodyWords = new Vector<>();
@@ -61,25 +78,19 @@ public class Stemmer {
                 stemmingHWords.add(spStemmer.getCurrent());
             }
         }
-        return new Page(normaliceATag(a),stemmingBodyWordsToString(stemmingBodyWords), normaliceTitleTag(title),
-                stemmingHWordsToString(stemmingHWords) );
+        return new Page(normaliceString(a),stemmingWordsToString(stemmingBodyWords), normaliceString(title),
+                stemmingWordsToString(stemmingHWords) );
     }
 
 
-    public String normaliceATag(String a )
+    public String normaliceString(String s )
     {
-        String normaliceA = a.toLowerCase().replaceAll("á","a").replaceAll("é","e")
+        String normaliceString = s.toLowerCase().replaceAll("á","a").replaceAll("é","e")
                 .replaceAll("í","i").replaceAll("ó","o").replaceAll("ú","u");
-        return normaliceA;
+        return normaliceString;
     }
 
-    public String normaliceTitleTag(String title) {
-        String normaliceTitle = title.toLowerCase().replaceAll("á", "a").replaceAll("é", "e")
-                .replaceAll("í", "i").replaceAll("ó", "o").replaceAll("ú", "u");
-        return normaliceTitle;
-    }
-
-    public String stemmingBodyWordsToString(Vector stringBody) {
+    public String stemmingWordsToString(Vector stringBody) {
         String stemmingBodyWordsToString = "";
         for(int i = 0; i < stringBody.size(); i++) {
             stemmingBodyWordsToString +=  stringBody.get(i) + " ";
@@ -87,11 +98,4 @@ public class Stemmer {
         return stemmingBodyWordsToString;
     }
 
-    public String stemmingHWordsToString(Vector stringH) {
-        String stemmingHWordsToString = "";
-        for(int i = 0; i < stringH.size(); i++) {
-            stemmingHWordsToString +=  stringH.get(i) + " ";
-        }
-        return stemmingHWordsToString;
-    }
 }

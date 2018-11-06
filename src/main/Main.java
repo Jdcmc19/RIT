@@ -49,23 +49,16 @@ public class Main extends Application {
             System.out.println("File: "+ doc.get(LuceneConstants.TITLE));
         }
     }
-    public static String getConsulta(int modo, String consulta){
-        String resultad="";
-        switch (modo){
-            case 1:break;
-            case 2: break;
-        }
-        return resultad;
-    }
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        try {
+        Stemmer stemmer = new Stemmer();
+        /*try {
 
 
 
             Charger charger = new Charger();
-            charger.getFiles("archivos/h6.txt");
+            charger.getFiles("src/Collection/h8.txt");
 
             LuceneIndexer index = charger.getIndexer();
 
@@ -74,11 +67,14 @@ public class Main extends Application {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         long endTime = System.currentTimeMillis();
         System.out.println("TIEMPO DE INDEXACION : "+(endTime-startTime)+" ms");
         try {
-            search("yorleny");
+            String consulta = "mujer";
+            consulta = stemmer.stemmerToCons(consulta,true);
+            System.out.println(consulta);
+            search(consulta);
 
         } catch (IOException e) {
             e.printStackTrace();
