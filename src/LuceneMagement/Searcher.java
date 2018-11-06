@@ -24,7 +24,7 @@ public class Searcher {
     }
     public TopDocs search( String searchQuery) throws IOException, ParseException {
         query = queryParser.parse(searchQuery);
-        return indexSearcher.search(query, LuceneConstants.TOP);
+        return indexSearcher.search(query,9000);
     }
 
     public Document getDocument(ScoreDoc scoreDoc)
@@ -38,7 +38,7 @@ public class Searcher {
         indexSearcher = new IndexSearcher(indexDirectory);
 
         Analyzer analyzer = new StandardAnalyzer();
-        queryParser = new QueryParser(LuceneConstants.TITLE,analyzer);
+        queryParser = new QueryParser(where,analyzer);
     }
 
     public void consultar(String searchQuery,String indexDir,String where) throws IOException, ParseException {
