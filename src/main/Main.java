@@ -1,34 +1,13 @@
 package main;
 
-import LuceneMagement.LuceneConstants;
-import LuceneMagement.LuceneIndexer;
 import LuceneMagement.Searcher;
-import IndexLucene.Stemmer;
-import classes.Charger;
-import classes.Identifier;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.jsoup.Jsoup;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class Main extends Application {
-    static String indexDir = "C:/Users/iworth/iCloudDrive/Desktop/Index";
-    static Searcher searcher;
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -36,51 +15,10 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
-    private static void search(String searchQuery) throws IOException, ParseException {
-        searcher = new Searcher(indexDir);
-        long startTime = System.currentTimeMillis();
-        TopDocs hits = searcher.search(searchQuery);
-        long endTime = System.currentTimeMillis();
 
-        System.out.println(hits.totalHits +
-                " documents found. Time :" + (endTime - startTime) +" ms");
-        for(ScoreDoc scoreDoc : hits.scoreDocs) {
-            Document doc = searcher.getDocument(scoreDoc);
-            System.out.println("File: "+ doc.get(LuceneConstants.TITLE));
-        }
-    }
 
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
-        Stemmer stemmer = new Stemmer();
-        /*try {
 
-
-
-            Charger charger = new Charger();
-            charger.getFiles("src/Collection/h8.txt");
-
-            LuceneIndexer index = charger.getIndexer();
-
-
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        long endTime = System.currentTimeMillis();
-        System.out.println("TIEMPO DE INDEXACION : "+(endTime-startTime)+" ms");
-        try {
-            String consulta = "mujer";
-            consulta = stemmer.stemmerToCons(consulta,true);
-            System.out.println(consulta);
-            search(consulta);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         //launch(args);
 

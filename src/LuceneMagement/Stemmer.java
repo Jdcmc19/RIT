@@ -1,4 +1,4 @@
-package IndexLucene;
+package LuceneMagement;
 
 import java.io.*;
 import java.util.HashSet;
@@ -13,18 +13,26 @@ import org.tartarus.snowball.ext.SpanishStemmer;
 
 public class Stemmer {
     //Patrón para dividir las palabras del documento
-    private static final String splitPattern = "[^A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+";
-    private static HashSet<String> stopWordsSet = new HashSet<String>();
-    private static Vector<String> stemmingBodyWords;
-    private static Vector<String> stemmingHWords ;
+    private final String splitPattern = "[^A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+";
+    private HashSet<String> stopWordsSet;
+    private Vector<String> stemmingBodyWords;
+    private Vector<String> stemmingHWords ;
+    private String pathStop;
     private static final SpanishStemmer spStemmer = new SpanishStemmer();
 
     //Metodo que retorna todas las stopwords en un hashSet
 
 
+    public Stemmer() {
+        stopWordsSet = new HashSet<>();
 
-    public static HashSet<String> getStopWordsSet() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("Utils/Stopwords.txt"));
+    }
+    public void setStopWords(String pathStop){
+        this.pathStop = pathStop;
+    }
+
+    public HashSet<String> getStopWordsSet() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(pathStop));
         String line;
         while ((line = bufferedReader.readLine())!= null)
         {

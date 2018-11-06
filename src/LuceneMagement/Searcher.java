@@ -20,14 +20,7 @@ public class Searcher {
     QueryParser queryParser;
     Query query;
 
-    public Searcher(String indexDirectoryPath) throws IOException {
-        IndexReader indexDirectory =
-                DirectoryReader.open(FSDirectory.open(new File(indexDirectoryPath).toPath()));
-
-        indexSearcher = new IndexSearcher(indexDirectory);
-
-        Analyzer analyzer = new StandardAnalyzer();
-        queryParser = new QueryParser(LuceneConstants.TITLE,analyzer);//TODO VER SI EL PROFE ELIGE DONDE QUIERE CONSULTAR
+    public Searcher(){
     }
     public TopDocs search( String searchQuery) throws IOException, ParseException {
         query = queryParser.parse(searchQuery);
@@ -37,6 +30,29 @@ public class Searcher {
     public Document getDocument(ScoreDoc scoreDoc)
             throws CorruptIndexException, IOException {
         return indexSearcher.doc(scoreDoc.doc);
+    }
+    public void setAll(String indexDirectoryPath,String where) throws IOException {
+        IndexReader indexDirectory =
+                DirectoryReader.open(FSDirectory.open(new File(indexDirectoryPath).toPath()));
+
+        indexSearcher = new IndexSearcher(indexDirectory);
+
+        Analyzer analyzer = new StandardAnalyzer();
+        queryParser = new QueryParser(LuceneConstants.TITLE,analyzer);
+    }
+
+    public void consultar(String searchQuery,String indexDir,String where) throws IOException, ParseException {
+        setAll(indexDir,where);
+        long startTime = System.currentTimeMillis();
+        TopDocs hits = search(searchQuery);
+        long endTime = System.currentTimeMillis();
+
+        System.out.println(hits.totalHits +
+                " documents found. Time :" + (endTime - startTime) +" ms");
+        for(ScoreDoc scoreDoc : hits.scoreDocs) {
+            Document doc = getDocument(scoreDoc);
+            System.out.println("File: "+ doc.get(LuceneConstants.TITLE));
+        }
     }
 
 }
