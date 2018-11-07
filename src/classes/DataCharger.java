@@ -1,11 +1,10 @@
 package classes;
 
-import LuceneMagement.LuceneIndexer;
-import IndexLucene.Stemmer;
+import LuceneMagement.Indexer;
+import LuceneMagement.Stemmer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 
@@ -13,18 +12,23 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Charger {
+public class DataCharger {
 
-    private LuceneIndexer indexer;
+    private Indexer indexer;
 
-    public Charger() throws IOException {
+
+   /* public Charger() throws IOException {
         indexer  = new LuceneIndexer("C:\\Users\\Joseph Salas\\Desktop\\Indice");
-    }
+    }*/
 
+    public DataCharger(){}
+
+    public void setIndexer(String path) throws IOException {
+        indexer = new Indexer(path);
+    }
     private byte[] getFragment(File f, long startByte, long chunkSize) throws Exception {
         RandomAccessFile raf = new RandomAccessFile(f, "r");
         raf.seek(startByte);
@@ -43,9 +47,14 @@ public class Charger {
 
     }
 
-    public void getFiles(String path){
-        System.out.println("Putaaa");
+
+
+
+    public void getFiles(String path, String stopwordspath){
+        long startTime = System.currentTimeMillis();
+
         Stemmer stemmer = new Stemmer();
+        stemmer.setStopWords(stopwordspath);
         File f = new File(path); //TODO PREGUNTAR AL PROFE SI ESTA BIEN
         long fileBytes = f.length(); //Bytes del archivo
         Map<String, Identifier> coleccionID = new TreeMap<>(); // TITULO PAGINA --->> [ByteInicio, ByteFinal] de cada pagina
@@ -114,6 +123,8 @@ public class Charger {
                 }
             }
             indexer.close();
+            long endTime = System.currentTimeMillis();
+            System.out.println("TIEMPO DE INDEXACION : "+(endTime-startTime)+" ms");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +132,7 @@ public class Charger {
         }
     }
 
-    public LuceneIndexer getIndexer() {
+    public Indexer getIndexer() {
         return indexer;
     }
 }

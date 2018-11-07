@@ -16,10 +16,10 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-public class LuceneIndexer {
+public class Indexer {
     private IndexWriter writer;
 
-    public LuceneIndexer(String indexDirectoryPath) throws IOException {
+    public Indexer(String indexDirectoryPath) throws IOException {
         //this directory will contain the indexes
         Directory indexDirectory = FSDirectory.open(Paths.get(indexDirectoryPath));
 

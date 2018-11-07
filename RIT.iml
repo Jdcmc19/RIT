@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jsoup-1.11.3" level="project" />
     <orderEntry type="library" name="lucene-analyzers-common-7.5.0" level="project" />
+    <orderEntry type="library" name="apache-lucene-snowball" level="project" />
   </component>
 </module>
