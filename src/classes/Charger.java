@@ -22,7 +22,7 @@ public class Charger {
     private LuceneIndexer indexer;
 
     public Charger() throws IOException {
-        indexer  = new LuceneIndexer("C:/Users/iworth/iCloudDrive/Desktop/Index");
+        indexer  = new LuceneIndexer("C:\\Users\\Joseph Salas\\Desktop\\Indice");
     }
 
     private byte[] getFragment(File f, long startByte, long chunkSize) throws Exception {
@@ -44,6 +44,7 @@ public class Charger {
     }
 
     public void getFiles(String path){
+        System.out.println("Putaaa");
         Stemmer stemmer = new Stemmer();
         File f = new File(path); //TODO PREGUNTAR AL PROFE SI ESTA BIEN
         long fileBytes = f.length(); //Bytes del archivo

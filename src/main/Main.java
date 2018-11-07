@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Main extends Application {
-    static String indexDir = "C:/Users/iworth/iCloudDrive/Desktop/Index";
+    static String indexDir = "C:\\Users\\Joseph Salas\\Desktop\\Indice";
     static Searcher searcher;
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -65,11 +65,9 @@ public class Main extends Application {
 
 
             Charger charger = new Charger();
-            charger.getFiles("archivos/h6.txt");
+            charger.getFiles("C:\\Users\\Joseph Salas\\IdeaProjects\\RIT-master\\RIT\\src\\Collection\\h6.txt");
 
             LuceneIndexer index = charger.getIndexer();
-
-
 
 
         } catch (IOException e) {
