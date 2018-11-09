@@ -19,6 +19,11 @@ public class DataCharger {
 
     private Indexer indexer;
 
+
+   /* public Charger() throws IOException {
+        indexer  = new LuceneIndexer("C:\\Users\\Joseph Salas\\Desktop\\Indice");
+    }*/
+
     public DataCharger(){}
 
     public void setIndexer(String path) throws IOException {
@@ -42,8 +47,12 @@ public class DataCharger {
 
     }
 
+
+
+
     public void getFiles(String path, String stopwordspath){
         long startTime = System.currentTimeMillis();
+
         Stemmer stemmer = new Stemmer();
         stemmer.setStopWords(stopwordspath);
         File f = new File(path);

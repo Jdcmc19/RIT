@@ -1,5 +1,6 @@
 package main;
 
+import LuceneMagement.Indexer;
 import LuceneMagement.LuceneConstants;
 import LuceneMagement.Searcher;
 import LuceneMagement.Stemmer;
@@ -15,6 +16,10 @@ import javax.xml.crypto.Data;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    static String indexDir = "C:\\Users\\Joseph Salas\\Desktop\\Indice";
+    static Searcher searcher;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -45,6 +50,8 @@ public class Main extends Application {
         } /*catch (ParseException e) {
             e.printStackTrace();
         }*/
+
+        //launch(args);
 
         //launch(args);
 

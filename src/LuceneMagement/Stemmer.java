@@ -25,14 +25,20 @@ public class Stemmer {
 
     public Stemmer() {
         stopWordsSet = new HashSet<>();
-
     }
+
+
+    /*public static HashSet<String> getStopWordsSet() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Joseph Salas\\IdeaProjects\\RIT-master\\RIT\\Utils\\Stopwords.txt"));
+
+    }*/
     public void setStopWords(String pathStop){
         this.pathStop = pathStop;
     }
 
     public HashSet<String> getStopWordsSet() throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(pathStop));
+
         String line;
         while ((line = bufferedReader.readLine())!= null)
         {
