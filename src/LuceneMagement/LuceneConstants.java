@@ -6,4 +6,6 @@ public class LuceneConstants {
     public static final String H = "encab";
     public static final String TITLE = "titulo";
     public static final int TOP = 30;
+    public static final String byteInicio = "inicia";
+    public static final String byteTermina = "termina";
 }

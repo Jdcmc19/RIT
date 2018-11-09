@@ -27,24 +27,24 @@ public class Main extends Application {
     public static void main(String[] args) {
         String stopwordspath = "C:\\Users\\iworth\\IdeaProjects\\RIT\\Utils\\Stopwords.txt";
         String index = "C:\\Users\\iworth\\iCloudDrive\\Desktop\\Index";
-        String archivo = "C:\\Users\\iworth\\IdeaProjects\\RIT\\src\\Collection\\h8.txt";
+        String archivo = "C:\\Users\\iworth\\iCloudDrive\\Desktop\\Colecciones\\h0.txt";
         Stemmer stemmer = new Stemmer();
         stemmer.setStopWords(stopwordspath);
-        String consulta = "Revision actual";
+        String consulta = "magnoel";
 
         DataCharger dc = new DataCharger();
         Searcher s = new Searcher();
         try {
             dc.setIndexer(index);
             dc.getFiles(archivo,stopwordspath);
-            consulta = stemmer.stemmerToCons(consulta,false);
-            System.out.println(consulta);
-            s.consultar(consulta,index, LuceneConstants.A);
+            //consulta = stemmer.stemmerToCons(consulta,false);
+            //System.out.println(consulta);
+            //s.consultar(consulta,index, LuceneConstants.BODY);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
+        } /*catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
         //launch(args);
 

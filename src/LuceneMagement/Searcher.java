@@ -51,7 +51,9 @@ public class Searcher {
                 " documents found. Time :" + (endTime - startTime) +" ms");
         for(ScoreDoc scoreDoc : hits.scoreDocs) {
             Document doc = getDocument(scoreDoc);
-            System.out.println("File: "+ doc.get(LuceneConstants.TITLE));
+            long start = Long.parseLong(doc.get(LuceneConstants.byteInicio));
+            long end = Long.parseLong(doc.get(LuceneConstants.byteTermina));
+            System.out.println("File: "+ doc.get(LuceneConstants.TITLE) + " " + start + " " + end);
         }
     }
 

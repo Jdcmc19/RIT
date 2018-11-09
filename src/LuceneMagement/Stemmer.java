@@ -87,7 +87,7 @@ public class Stemmer {
             }
         }
         return new Page(normaliceString(a),stemmingWordsToString(stemmingBodyWords), normaliceString(title),
-                stemmingWordsToString(stemmingHWords) );
+                stemmingWordsToString(stemmingHWords));
     }
 
 

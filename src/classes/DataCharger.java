@@ -46,10 +46,17 @@ public class DataCharger {
         long startTime = System.currentTimeMillis();
         Stemmer stemmer = new Stemmer();
         stemmer.setStopWords(stopwordspath);
-        File f = new File(path); //TODO PREGUNTAR AL PROFE SI ESTA BIEN
+        File f = new File(path);
+        /*try {
+            byte[] ss = getFragment(f,8262242,8268527-8262242); //PRUEBA
+            String sss= new String(ss);
+            System.out.println(sss);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
         long fileBytes = f.length(); //Bytes del archivo
-        Map<String, Identifier> coleccionID = new TreeMap<>(); // TITULO PAGINA --->> [ByteInicio, ByteFinal] de cada pagina
-        int longXFragmento = 1000000; //TAMAÑO DE CADA FRAGMENTO/SEGMENTO
+        int longXFragmento = 100000; //TAMAÑO DE CADA FRAGMENTO/SEGMENTO
         int cantPages = 0; //PARA SABER CUANTAS PAGINAS HAY
         try {
             long endFragmento = longXFragmento; //DONDE TERMINARÁ EL FRAGMENTO
@@ -73,7 +80,7 @@ public class DataCharger {
                     termina = fragmento.indexOf("</html", inicia) + 7;
                 int anterior = 0; //INDICE DE DONDE TERMINO LA PAGINA ANTERIOR
                 tienePagina = false; //PARA SABER SI EL FRAGMENTO TIENE ALGUNA PAGINA [ENTRÓ AL WHILE O NO]
-                while (termina != 6) { //ESTE ES EL WHILE DE LAS PAGINAS
+                while (termina != 6 && fragmento.length()>=termina) { //ESTE ES EL WHILE DE LAS PAGINAS
 
                     String page = fragmento.substring(inicia, termina); //AGARRA DEL FRAGMENTO, UNA PAGINA PERO INCLUYE EL TEXTO DOCTYPE html PUBLIC
                     int indexEmpieza = page.indexOf("<html"); //DE page, DONDE VERDADERAMENTE INICIA LA PAGINA "<html>"
@@ -83,16 +90,16 @@ public class DataCharger {
                     pageStartByte = startFragmento + fragmento.substring(0, inicia + indexEmpieza).getBytes().length; //EL BYTE EXACTO DONDE INICIA LA PAGINA [CADA PAGE]
                     pageEndByte = startFragmento + fragmento.substring(0, termina).getBytes().length; //EL BYTE EXACTO DONDE TERMINA LA PAGINA [CADA PAGE]
 
-                    Identifier idPage = new Identifier(pageStartByte, pageEndByte); //GUARDA EL BYTE INICIO Y FINAL DE CADA PAGINA
                     String title = doc.getElementsByTag("title").text();
                     if (title.isEmpty())
                         title = "SIN TITULO";
-                    coleccionID.put(title + ", #" + ++cantPages, idPage); //METE EN EL DICCIONARIO EL TITULO ->> IDENTIFICADOR ^
                     Elements body = doc.select("body");
                     Elements a = doc.getElementsByTag("a");
 
                     Elements h = doc.select("h1,h2,h3,h4,h5,h6");
-                    Page pagina = stemmer.stemmerToDoc(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
+                    Page pagina = stemmer.stemmerToDoc(concatElements(a), concatElements(body), title + ", #" + ++cantPages, concatElements(h));
+                    pagina.setStart(pageStartByte);
+                    pagina.setEnd(pageEndByte);
                     //Page pagina = new Page(concatElements(a), concatElements(body), title + ", #" + cantPages, concatElements(h));
                     //TODO AQUI LLAMAR LUCENE O LA FUNCION [llamarla de la clase Lucene]
                     indexer.indexFile(pagina);
@@ -115,7 +122,12 @@ public class DataCharger {
             }
             indexer.close();
             long endTime = System.currentTimeMillis();
-            System.out.println("TIEMPO DE INDEXACION : "+(endTime-startTime)+" ms");
+            long tiempo = (endTime-startTime);
+            long horas=tiempo/3600000;
+            long min=(tiempo%3600000)/60000;
+            long seg=((tiempo%3600000)%60000)/1000;
+            long mili=((tiempo%3600000)%60000)%1000;
+            System.out.println("TIEMPO DE INDEXACION :"+horas+" Horas "+min+" Minutos "+seg+" Segundos "+mili+" MS");
 
         } catch (Exception e) {
             e.printStackTrace();
