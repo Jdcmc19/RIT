@@ -23,14 +23,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello Worlds");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("INDEXACIÓN Y BÚSQUEDA DE PÁGINAS WEB");
+        primaryStage.setScene(new Scene(root, 600, 594.0));
         primaryStage.show();
     }
 
 
-    public static void main(String[] args) {
-        String stopwordspath = "C:\\Users\\iworth\\IdeaProjects\\RIT\\Utils\\Stopwords.txt";
+    public static void main(String[] args) throws IOException {
+
+        /*String stopwordspath = "C:\\Users\\iworth\\IdeaProjects\\RIT\\Utils\\Stopwords.txt";
         String index = "C:\\Users\\iworth\\iCloudDrive\\Desktop\\Index";
         String archivo = "C:\\Users\\iworth\\IdeaProjects\\RIT\\src\\Collection\\h8.txt";
         Stemmer stemmer = new Stemmer();
@@ -49,11 +50,15 @@ public class Main extends Application {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
         //launch(args);
 
         //launch(args);
+        Stemmer stemmer = new Stemmer();
+        stemmer.setStopWords("C:\\Users\\Joseph Salas\\IdeaProjects\\RIT-master\\RIT\\Utils\\Stopwords.txt");
+        stemmer.getStopWordsSet();
+        stemmer.tokenizeStopStem("Hola me llamo Joseph y soy una persona importante además ayuda por favor");
 
     }
 }
