@@ -65,7 +65,7 @@ public class DataCharger {
         }*/
 
         long fileBytes = f.length(); //Bytes del archivo
-        int longXFragmento = 100000; //TAMAÑO DE CADA FRAGMENTO/SEGMENTO
+        int longXFragmento = 1000000; //TAMAÑO DE CADA FRAGMENTO/SEGMENTO
         int cantPages = 0; //PARA SABER CUANTAS PAGINAS HAY
         try {
             long endFragmento = longXFragmento; //DONDE TERMINARÁ EL FRAGMENTO

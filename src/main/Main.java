@@ -17,9 +17,6 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    static String indexDir = "C:\\Users\\Joseph Salas\\Desktop\\Indice";
-    static Searcher searcher;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
