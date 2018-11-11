@@ -8,10 +8,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -24,7 +21,7 @@ public class Searcher {
     }
     public TopDocs search( String searchQuery) throws IOException, ParseException {
         query = queryParser.parse(searchQuery);
-        return indexSearcher.search(query,9000);
+        return indexSearcher.search(query,1000, Sort.RELEVANCE);
     }
 
     public Document getDocument(ScoreDoc scoreDoc)
