@@ -38,6 +38,10 @@ public class Indexer {
         FieldType fieldType = new FieldType();
         fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
 
+        FieldType fieldType3 = new FieldType();
+        fieldType3.setIndexOptions(IndexOptions.NONE);
+        fieldType3.setStored(true);
+
         FieldType fieldType2 = new FieldType();
         fieldType2.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
         fieldType2.setStored(true);
@@ -52,16 +56,21 @@ public class Indexer {
 
         Field hField = new Field(LuceneConstants.H,page.getH(),fieldType);
 
+        Field sField = new Field(LuceneConstants.byteInicio,Long.toString(page.getStart()),fieldType3);
+        Field eField = new Field(LuceneConstants.byteTermina,Long.toString(page.getEnd()),fieldType3);
+
         document.add(titleField);
         document.add(bodyField);
         document.add(aField);
         document.add(hField);
+        document.add(sField);
+        document.add(eField);
 
         return document;
     }
 
     public void indexFile(Page page) throws IOException {
-        System.out.println("Indexing "+page.getTitle());
+       // System.out.println("Indexing "+page.getTitle());
         Document document = getDocument(page);
         writer.addDocument(document);
     }

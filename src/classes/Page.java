@@ -5,12 +5,23 @@ public class Page {
     private String body;
     private String title;
     private String h;
+    private long start;
+    private long end;
 
     public Page(String a, String body, String title, String h) {
         this.a = a;
         this.body = body;
         this.title = title;
         this.h = h;
+    }
+
+    public Page(String a, String body, String title, String h, long start, long end) {
+        this.a = a;
+        this.body = body;
+        this.title = title;
+        this.h = h;
+        this.start = start;
+        this.end = end;
     }
 
     @Override
@@ -53,6 +64,22 @@ public class Page {
 
     public void setH(String h) {
         this.h = h;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    public long getEnd() {
+        return end;
+    }
+
+    public void setEnd(long end) {
+        this.end = end;
     }
 }
 

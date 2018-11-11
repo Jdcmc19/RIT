@@ -82,9 +82,8 @@ public class Stemmer {
             sb.append(attribute.toString());
             sb.append(" ");
         }
-
         System.out.println(sb);
-      return sb.toString();
+        return sb.toString();
 
     }
 
