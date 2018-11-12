@@ -1,6 +1,7 @@
 package LuceneMagement;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -16,6 +17,7 @@ public class Searcher {
     IndexSearcher indexSearcher;
     QueryParser queryParser;
     Query query;
+    TopDocs hits;
 
     public Searcher(){
     }
@@ -41,7 +43,7 @@ public class Searcher {
     public void consultar(String searchQuery,String indexDir,String where) throws IOException, ParseException {
         setAll(indexDir,where);
         long startTime = System.currentTimeMillis();
-        TopDocs hits = search(searchQuery);
+        hits = search(searchQuery);
         long endTime = System.currentTimeMillis();
 
         System.out.println(hits.totalHits +
@@ -53,5 +55,20 @@ public class Searcher {
             System.out.println("File: "+ doc.get(LuceneConstants.TITLE) + " " + start + " " + end);
         }
     }
+    public ArrayList<Document> getPage(int page) throws IOException {
+        ArrayList<Document> docs = new ArrayList<>();
+        for(int i=0;i<20;i++){
+            if(hits.totalHits>(i+(20*(page-1)))){
+                ScoreDoc sd = hits.scoreDocs[i+(20*(page-1))];
+                Document doc = getDocument(sd);
+                docs.add(doc);
+            }
+        }
+        return docs;
 
+    }
+
+    public int getHits() {
+        return hits.scoreDocs.length;
+    }
 }

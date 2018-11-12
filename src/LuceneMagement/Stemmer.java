@@ -46,8 +46,10 @@ public class Stemmer {
 
 
     //APLICA STEMMING A CONSULTA---------------------------------------------------------
-    public String stemmerToCons(String consulta, Boolean stopwords) throws IOException {
-       return tokenizeStopStem(consulta);
+    public String stemmerToCons(String consulta,String where) throws IOException {
+        if(where.equals("ref")||where.equals("titulo"))
+            return normaliceString(consulta);
+        return tokenizeStopStem(consulta);
     }
 
     //APLICA STEMMING A CADA PAGINA-------------------------------------------------------
@@ -82,7 +84,6 @@ public class Stemmer {
             sb.append(attribute.toString());
             sb.append(" ");
         }
-        System.out.println(sb);
         return sb.toString();
 
     }

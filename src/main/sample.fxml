@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -18,21 +19,28 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <Pane prefHeight="779.0" prefWidth="528.0">
+      <Pane prefHeight="653.0" prefWidth="528.0">
          <children>
-            <TextField layoutX="58.0" layoutY="138.0" prefHeight="25.0" prefWidth="332.0" />
-            <Button layoutX="396.0" layoutY="138.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Indexar" />
-            <TextField layoutX="58.0" layoutY="173.0" prefHeight="25.0" prefWidth="332.0" />
-            <Button layoutX="396.0" layoutY="173.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Consultar" />
-            <TextField layoutX="59.0" layoutY="523.0" prefHeight="25.0" prefWidth="332.0" />
-            <Button layoutX="395.0" layoutY="523.0" mnemonicParsing="false" text="Definir Index" />
-            <ScrollPane fx:id="scrollPane" layoutX="59.0" layoutY="249.0" prefHeight="266.0" prefWidth="420.0" />
-            <Label layoutX="59.0" layoutY="213.0" text="Index Cargado:">
+            <TextField fx:id="txtIndex" layoutX="53.0" layoutY="138.0" prefHeight="25.0" prefWidth="301.0" promptText="Dirección de la Colección." />
+            <Button fx:id="btoIndex" layoutX="391.0" layoutY="138.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Indexar" />
+            <TextField fx:id="txtQuery" layoutX="54.0" layoutY="202.0" prefHeight="25.0" prefWidth="239.0" promptText="Consulta a realizar." text="wikipedia" />
+            <Button fx:id="btoQuery" layoutX="392.0" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Consultar" />
+            <TextField fx:id="txtDefIndex" layoutX="54.0" layoutY="549.0" prefHeight="25.0" prefWidth="301.0" promptText="Directorio del Indice a usar." text="C:\Users\iworth\iCloudDrive\Desktop\last" />
+            <Button fx:id="btoDefIndex" layoutX="390.0" layoutY="549.0" mnemonicParsing="false" text="Definir Index" />
+            <ScrollPane fx:id="scrollPane" layoutX="54.0" layoutY="273.0" prefHeight="266.0" prefWidth="420.0">
+               <content>
+                  <GridPane fx:id="gridPane" prefHeight="263.0" prefWidth="418.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                  </GridPane>
+               </content></ScrollPane>
+            <Label layoutX="54.0" layoutY="244.0" text="Index Cargado:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="158.0" layoutY="213.0" prefHeight="20.0" prefWidth="320.0" text="here el path">
+            <Label fx:id="lblPathIndex" layoutX="153.0" layoutY="244.0" prefHeight="20.0" prefWidth="320.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -42,9 +50,50 @@
                   <Font size="36.0" />
                </font>
             </Label>
-            <Label layoutX="59.0" layoutY="108.0" text="Configuraciones">
+            <Label layoutX="54.0" layoutY="108.0" text="Configuraciones">
                <font>
                   <Font size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="btoPrevious" layoutX="393.0" layoutY="499.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="0.0" text="&lt;">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="btoNext" layoutX="420.0" layoutY="499.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="0.0" text="&gt;">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <TextField fx:id="txtStopwords" layoutX="54.0" layoutY="170.0" prefHeight="25.0" prefWidth="301.0" promptText="Dirección de los Stopwords." text="C:\Users\iworth\IdeaProjects\RIT\Utils\Stopwords.txt" />
+            <Button fx:id="btoStopwords" layoutX="391.0" layoutY="170.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Stopwords" />
+            <ComboBox fx:id="cbType" layoutX="302.0" layoutY="202.0" prefHeight="25.0" prefWidth="83.0" />
+            <Button fx:id="fcIndexar" layoutX="361.0" layoutY="138.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="0.0" text="..." />
+            <Button fx:id="fcStopwords" layoutX="361.0" layoutY="170.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="0.0" text="..." />
+            <Button fx:id="fcDefIndex" layoutX="361.0" layoutY="549.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="0.0" text="..." />
+            <Label layoutX="129.0" layoutY="585.0" text="Documentos encontrados">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblDocF" alignment="CENTER" contentDisplay="CENTER" layoutX="144.0" layoutY="609.0" prefHeight="20.0" prefWidth="83.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="302.0" layoutY="585.0" text="Documentos Indexados">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblDocIndex" alignment="CENTER" contentDisplay="CENTER" layoutX="314.0" layoutY="609.0" prefHeight="20.0" prefWidth="83.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblDuracion" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="139.0" layoutY="630.0" prefHeight="20.0" prefWidth="387.0">
+               <font>
+                  <Font size="10.0" />
                </font>
             </Label>
          </children>

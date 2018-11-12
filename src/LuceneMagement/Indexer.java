@@ -22,7 +22,6 @@ public class Indexer {
     public Indexer(String indexDirectoryPath) throws IOException {
         //this directory will contain the indexes
         Directory indexDirectory = FSDirectory.open(Paths.get(indexDirectoryPath));
-
         IndexWriterConfig indexConfig = new IndexWriterConfig(new StandardAnalyzer());
         indexConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         //create the indexer

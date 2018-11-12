@@ -21,7 +21,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("INDEXACIÓN Y BÚSQUEDA DE PÁGINAS WEB");
-        primaryStage.setScene(new Scene(root, 600, 594.0));
+        primaryStage.setScene(new Scene(root, 528, 638));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -49,13 +50,12 @@ public class Main extends Application {
             e.printStackTrace();
         }*/
 
-        //launch(args);
-
-        //launch(args);
+        launch(args);
+/*
         Stemmer stemmer = new Stemmer();
         stemmer.setStopWords("C:\\Users\\Joseph Salas\\IdeaProjects\\RIT-master\\RIT\\Utils\\Stopwords.txt");
         stemmer.getStopWordsSet();
-        stemmer.tokenizeStopStem("Hola me llamo Joseph y soy una persona importante además ayuda por favor");
+        stemmer.tokenizeStopStem("Hola me llamo Joseph y soy una persona importante además ayuda por favor");*/
 
     }
 }

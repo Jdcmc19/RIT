@@ -18,6 +18,7 @@ import java.util.TreeMap;
 public class DataCharger {
 
     private Indexer indexer;
+    private long cantPages=0;
 
 
    /* public Charger() throws IOException {
@@ -29,7 +30,7 @@ public class DataCharger {
     public void setIndexer(String path) throws IOException {
         indexer = new Indexer(path);
     }
-    private byte[] getFragment(File f, long startByte, long chunkSize) throws Exception {
+    public byte[] getFragment(File f, long startByte, long chunkSize) throws Exception {
         RandomAccessFile raf = new RandomAccessFile(f, "r");
         raf.seek(startByte);
         int size = (int) Math.min(chunkSize, raf.length()-startByte);
@@ -66,7 +67,7 @@ public class DataCharger {
 
         long fileBytes = f.length(); //Bytes del archivo
         int longXFragmento = 1000000; //TAMAÑO DE CADA FRAGMENTO/SEGMENTO
-        int cantPages = 0; //PARA SABER CUANTAS PAGINAS HAY
+        cantPages = 0; //PARA SABER CUANTAS PAGINAS HAY
         try {
             long endFragmento = longXFragmento; //DONDE TERMINARÁ EL FRAGMENTO
             long startFragmento = 0; //DONDE EMPIEZA EL FRAGMENTO
@@ -142,9 +143,18 @@ public class DataCharger {
             e.printStackTrace();
 
         }
+
     }
 
     public Indexer getIndexer() {
         return indexer;
+    }
+
+    public long getCantPages() {
+        return cantPages;
+    }
+
+    public void setCantPages(long cantPages) {
+        this.cantPages = cantPages;
     }
 }
